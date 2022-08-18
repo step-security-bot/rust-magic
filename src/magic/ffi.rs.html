@@ -240,6 +240,10 @@
 <span id="234">234</span>
 <span id="235">235</span>
 <span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-FileCopyrightText: © The `magic` Rust crate authors</span>
 <span class="comment">// SPDX-License-Identifier: MIT OR Apache-2.0</span>
 
@@ -475,6 +479,10 @@
     } <span class="kw">else</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">cookie</span>)
     }
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">version</span>() -&gt; <span class="ident">libc::c_int</span> {
+    <span class="kw">unsafe</span> { <span class="ident">libmagic::magic_version</span>() }
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="magic" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
