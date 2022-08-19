@@ -533,6 +533,55 @@
 <span id="527">527</span>
 <span id="528">528</span>
 <span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-FileCopyrightText: © The `magic` Rust crate authors</span>
 <span class="comment">// SPDX-License-Identifier: MIT OR Apache-2.0</span>
 
@@ -543,7 +592,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! You might be familiar with `libmagic`&#39;s CLI; [`file`](https://www.darwinsys.com/file/):</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```sh</span>
+<span class="doccomment">//! ```shell</span>
 <span class="doccomment">//! $ file data/tests/rust-logo-128x128-blk.png</span>
 <span class="doccomment">//! data/tests/rust-logo-128x128-blk.png: PNG image data, 128 x 128, 8-bit/color RGBA, non-interlaced</span>
 <span class="doccomment">//! ```</span>
@@ -553,7 +602,8 @@
 <span class="doccomment">//! Understanding how the `libmagic` C library and thus this crate works requires a bit of glossary.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! `libmagic` at its core can analyze a file or buffer and return a mostly unstructured text that describes the analysis result.</span>
-<span class="doccomment">//! There are built-in tests for special cases and there are magic databases with signatures which can be supplied by the user for the generic cases.</span>
+<span class="doccomment">//! There are built-in tests for special cases such as symlinks and compressed files</span>
+<span class="doccomment">//! and there are magic databases with signatures which can be supplied by the user for the generic cases.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The analysis behaviour can be influenced by so-called flags and parameters.</span>
 <span class="doccomment">//! Flags are either set or unset and do not have a value, parameters have a value.</span>
@@ -570,10 +620,11 @@
 <span class="doccomment">//! # fn main() -&gt; Result&lt;(), magic::MagicError&gt; {</span>
 <span class="doccomment">//! // Open a new configuration with flags</span>
 <span class="doccomment">//! let cookie = magic::Cookie::open(magic::CookieFlags::ERROR)?;</span>
-<span class="doccomment">//! // Load the default database</span>
-<span class="doccomment">//! cookie.load::&lt;&amp;str&gt;(&amp;[])?;</span>
-<span class="doccomment">//! // Load an additional database for demonstration purposes</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! // Load a specific database (so exact text assertion below works regardless of the system&#39;s default database)</span>
 <span class="doccomment">//! cookie.load(&amp;vec![&quot;data/tests/db-images-png&quot;])?;</span>
+<span class="doccomment">//! // You can instead load the default database</span>
+<span class="doccomment">//! //cookie.load::&lt;&amp;str&gt;(&amp;[])?;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! // Analyze a test file</span>
 <span class="doccomment">//! let file_to_analyze = &quot;data/tests/rust-logo-128x128-blk.png&quot;;</span>
@@ -582,12 +633,22 @@
 <span class="doccomment">//! # Ok(())</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! See further examples in [`examples/`](https://github.com/robo9k/rust-magic/tree/main/examples).</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! # Further reading</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! * [`Cookie::open`]</span>
-<span class="doccomment">//! * [`CookieFlags`], in particular [`CookieFlags::ERROR`], [`CookieFlags::NO_CHECK_BUILTIN`]</span>
+<span class="doccomment">//! * [`CookieFlags`], in particular:</span>
+<span class="doccomment">//!     * [`CookieFlags::ERROR`]</span>
+<span class="doccomment">//!     * [`CookieFlags::NO_CHECK_BUILTIN`]</span>
+<span class="doccomment">//!     * [`CookieFlags::MIME`]</span>
+<span class="doccomment">//!     * [`CookieFlags::EXTENSION`]</span>
 <span class="doccomment">//! * [`Cookie::load`], [`Cookie::load_buffers`]</span>
 <span class="doccomment">//! * [`Cookie::file`], [`Cookie::buffer`]</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Note that while some `libmagic` functions return somewhat structured text, e.g. MIME types and file extensions,</span>
+<span class="doccomment">//! the `magic` crate does not attempt to parse them into Rust data types since the format is not guaranteed by the C FFI API.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Safety</span>
 <span class="doccomment">//!</span>
@@ -653,6 +714,18 @@
         <span class="kw">const</span> <span class="ident">DEVICES</span>           <span class="op">=</span> <span class="ident">libmagic::MAGIC_DEVICES</span>;
 
         <span class="doccomment">/// Return a MIME type string, instead of a textual description</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// See also: [`CookieFlags::MIME`]</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// NOTE: `libmagic` uses non-standard MIME types for at least some built-in checks,</span>
+        <span class="doccomment">/// e.g. `inode/*` (also see [`CookieFlags::SYMLINK`], [`CookieFlags::DEVICES`]):</span>
+        <span class="doccomment">/// ```shell</span>
+        <span class="doccomment">/// $ file --mime-type /proc/self/exe</span>
+        <span class="doccomment">/// /proc/self/exe: inode/symlink</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// $file --mime-type /dev/sda</span>
+        <span class="doccomment">/// /dev/sda: inode/blockdevice</span>
+        <span class="doccomment">/// ```</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;MAGIC_MIME_TYPE&quot;</span>)]</span>
         <span class="kw">const</span> <span class="ident">MIME_TYPE</span>         <span class="op">=</span> <span class="ident">libmagic::MAGIC_MIME_TYPE</span>;
 
@@ -679,10 +752,26 @@
         <span class="kw">const</span> <span class="ident">ERROR</span>             <span class="op">=</span> <span class="ident">libmagic::MAGIC_ERROR</span>;
 
         <span class="doccomment">/// Return a MIME encoding, instead of a textual description</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// See also: [`CookieFlags::MIME`]</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// NOTE: `libmagic` uses non-standard MIME `charset` values, e.g. for binary files:</span>
+        <span class="doccomment">/// ```shell</span>
+        <span class="doccomment">/// $ file --mime-encoding /proc/self/exe</span>
+        <span class="doccomment">/// binary</span>
+        <span class="doccomment">/// ```</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;MAGIC_MIME_ENCODING&quot;</span>)]</span>
         <span class="kw">const</span> <span class="ident">MIME_ENCODING</span>     <span class="op">=</span> <span class="ident">libmagic::MAGIC_MIME_ENCODING</span>;
 
         <span class="doccomment">/// A shorthand for `MIME_TYPE | MIME_ENCODING`</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// See also: [`CookieFlags::MIME_TYPE`], [`CookieFlags::MIME_ENCODING`]</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// NOTE: `libmagic` returns a parseable MIME type with a `charset` field:</span>
+        <span class="doccomment">/// ```shell</span>
+        <span class="doccomment">/// $ file --mime /proc/self/exe</span>
+        <span class="doccomment">/// /proc/self/exe: inode/symlink; charset=binary</span>
+        <span class="doccomment">/// ```</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;MAGIC_MIME&quot;</span>)]</span>
         <span class="kw">const</span> <span class="ident">MIME</span>              <span class="op">=</span> <span class="ident"><span class="self">Self</span>::MIME_TYPE</span>.<span class="ident">bits</span>
                                 <span class="op">|</span> <span class="ident"><span class="self">Self</span>::MIME_ENCODING</span>.<span class="ident">bits</span>;
@@ -692,6 +781,15 @@
         <span class="kw">const</span> <span class="ident">APPLE</span>             <span class="op">=</span> <span class="ident">libmagic::MAGIC_APPLE</span>;
 
         <span class="doccomment">/// Return a slash-separated list of extensions for this file type</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// NOTE: `libmagic` returns a list with one or more extensions without a leading &quot;.&quot; dot:</span>
+        <span class="doccomment">/// ```shell</span>
+        <span class="doccomment">/// $ file --extension example.jpg</span>
+        <span class="doccomment">/// example.jpg: jpeg/jpg/jpe/jfif</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// $ file --extension /proc/self/exe</span>
+        <span class="doccomment">/// /proc/self/exe: ???</span>
+        <span class="doccomment">/// ```</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;MAGIC_EXTENSION&quot;</span>)]</span>
         <span class="kw">const</span> <span class="ident">EXTENSION</span>         <span class="op">=</span> <span class="ident">libmagic::MAGIC_EXTENSION</span>;
 
