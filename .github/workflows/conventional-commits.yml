@@ -1,0 +1,23 @@
+permissions:
+    contents: read
+
+on:
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    check-commits:
+        # https://github.com/cocogitto/cocogitto-action
+        runs-on: ubuntu-latest
+        name: check conventional commit compliance
+        steps:
+            - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+              with:
+                fetch-depth: 0
+                # pick the pr HEAD instead of the merge commit
+                ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Conventional commits check
+              uses: oknozor/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
+              with:
+                check-latest-tag-only: true
