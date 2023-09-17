@@ -1,3 +1,20 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.14.1](https://github.com/robo9k/rust-magic/compare/v0.14.0...v0.14.1) - 2023-09-17
+
+### Other
+- Fix duplicate version in CHANGELOG
+- Fix duplicate version in CHANGELOG
+- Cleanup old release configuration
+- Mention SPDX license identifier
+- Backfill empty CHANGELOG for old releases
+- Use `release-plz` GitHub Action
 
 ## 0.14.0 - 2023-09-16
 
